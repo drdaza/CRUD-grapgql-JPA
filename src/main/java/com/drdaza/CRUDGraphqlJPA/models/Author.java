@@ -1,10 +1,13 @@
 package com.drdaza.CRUDGraphqlJPA.models;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity(name = "authors")
 public class Author {
@@ -17,6 +20,9 @@ public class Author {
     private String name;
 
     private Integer age;
+
+    @ManyToMany(mappedBy = "authors")
+    private List<Book> books;
 
     public Author() {
     }

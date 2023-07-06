@@ -9,27 +9,22 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import com.drdaza.CRUDGraphqlJPA.models.Author;
-import com.drdaza.CRUDGraphqlJPA.resolver.Mutation;
-import com.drdaza.CRUDGraphqlJPA.resolver.Query;
+import com.drdaza.CRUDGraphqlJPA.services.AuthorService;
 
 
 @Controller
 public class AuthorController {
     @Autowired
-    private Query query;
-    private Mutation mutation;
+    private AuthorService service;
 
-    public AuthorController(Mutation mutation) {
-        this.mutation = mutation;
-    }
 
     @MutationMapping
     public Author createAuthor(@Argument String name, @Argument Integer age){
-        return mutation.createAuthor(name, age);
+        return service.createAuthor(name, age);
     }
 
     @QueryMapping
     public List<Author> findAllAuthors(){
-        return query.findAllAuthors();
+        return service.findAllAuthors();
     } 
 }

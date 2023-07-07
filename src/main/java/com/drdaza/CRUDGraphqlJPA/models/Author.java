@@ -32,6 +32,10 @@ public class Author {
         this.age = age;
     }
 
+    public void setId(Long id){
+        this.id = id;
+    }
+    
     public Long getId() {
         return id;
     }

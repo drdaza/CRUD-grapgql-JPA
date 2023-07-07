@@ -32,4 +32,20 @@ public class AuthorService {
 
         return authorMutation.create(newAuthor);
     }
+
+    public Author updateAuthor(Long id, String name, Integer age){
+        Author updateAuthor = new Author();
+        updateAuthor.setId(id);
+        updateAuthor.setAge(age);
+        updateAuthor.setName(name);
+        return authorMutation.update(updateAuthor);
+    }
+
+    public List<Author> deleteAuthor(Long id){
+        Author authorToDelete = new Author();
+        authorToDelete.setId(id);
+        authorToDelete.setAge(0);
+        authorToDelete.setName("default");
+        return authorMutation.delete(authorToDelete);
+    }
 }

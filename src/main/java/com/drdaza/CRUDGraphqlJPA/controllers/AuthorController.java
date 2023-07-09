@@ -37,4 +37,8 @@ public class AuthorController {
     public List<Author> findAllAuthors(){
         return service.findAllAuthors();
     } 
+    @QueryMapping
+    public Author findOneAuthor(@Argument Long authorId){
+        return service.findOneAuthor(authorId);
+    }
 }

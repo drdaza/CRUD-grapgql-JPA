@@ -22,6 +22,16 @@ public class BookController {
         return bookService.createBook(title, description, authorId);
     }
 
+    @MutationMapping
+    public Book updateBook(@Argument Long id, @Argument String title,@Argument String description){
+        return bookService.updateBook(id, title, description);
+    }
+
+    @MutationMapping
+    public List<Book> deleteBook(@Argument Long id){
+        return bookService.deleteBook(id);
+    }
+
     @QueryMapping
     public Book findOneBook(@Argument Long bookId){
         return bookService.findOneBook(bookId);

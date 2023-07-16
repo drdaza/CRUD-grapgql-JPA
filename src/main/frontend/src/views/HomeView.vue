@@ -1,18 +1,13 @@
 <script setup>
 import { useQuery, useMutation} from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import { computed, ref, onBeforeMount } from 'vue';
-import {useAuthorStore} from '../stores/authorStore'
+import { computed, ref } from 'vue';
+
 
 const name = ref('')
 const age = ref(0)
 
-const authorStore = useAuthorStore()
 
-onBeforeMount(() => {
-  authorStore.findAllAuthors()
-  console.log(authorStore.allAuthors.value)
-})
 
 const ALL_AUTHORS_QUERY = gql`
       query {

@@ -2,22 +2,27 @@
 import {useAuthorStore} from '../stores/authorStore'
 import { ref, onBeforeMount } from 'vue';
 const authorStore = useAuthorStore()
-const authorId = ref(0)
+const authorIdToUpdate = ref(0)
+const authorIdToDelete = ref(0)
+const age = ref(0)
+const name = ref('')
 onBeforeMount(() => {
   authorStore.findAllAuthors()
 })
-
-
-
 </script>
 <template>
   <ul>
     <li v-for="author of authorStore.allAuthors">{{author.name}} {{ author.age }}</li>
   </ul>
-  <input type="number" v-model="authorId">
-  <button @click="authorStore.createAuthor({name: 'albero', age: 24})">create</button>
-  <button @click="authorStore.deleteAuthor(authorStore.allAuthors.length)">delete</button>
-  <button @click="authorStore.updateAuthor({id: authorId, name: 'tulio', age: 28})">update</button>
+  <span>uptade</span>
+  <input type="number" v-model="authorIdToUpdate">
+  <span>delete</span>
+  <input type="number" v-model="authorIdToDelete">
+  <input type="text" v-model="name">
+  <input type="number" v-model="age">
+  <button @click="authorStore.createAuthor({name, age})">create</button>
+  <button @click="authorStore.deleteAuthor(authorIdToDelete)">delete</button>
+  <button @click="authorStore.updateAuthor({id: authorIdToUpdate , name: 'tulio', age: 28})">update</button>
 </template>
 
 <style>

@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 
 
 export const ALL_AUTHORS_QUERY = gql`
-      query {
+      query findAllAuthors{
         findAllAuthors{
           id
           name
@@ -35,6 +35,18 @@ export const UPDATE_AUTHOR_MUTATION = gql`
           id
           name
           age
+        }
+      }
+`
+export const CREATE_BOOK_MUTATION = gql`
+      mutation createBook($title: String!, $description: String, $authorId: ID!){
+        createBook (title: $title description: $description authorId: $authorId) {
+          title
+          description
+          authors {
+            name
+            age
+          }
         }
       }
 `

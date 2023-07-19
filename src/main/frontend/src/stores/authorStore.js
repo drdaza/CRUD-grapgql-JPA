@@ -43,7 +43,18 @@ export const useAuthorStore = defineStore('authors', () => {
     apolloClient.mutate({
       mutation: DELETE_AUTHOR_MUTATION, variables:{
         id: authorId
-      }
+      },
+      update: (cache) => {
+        cache.modify({
+          fields: {
+            findAllAuthors(existingAuthors, { readField }) {
+              return existingAuthors.filter(authorRef => authorId !== readField('id', authorRef));
+            }
+          }
+        });
+      },
+      awaitRefetchQueries: true,
+      refetchQueries: [{ query: ALL_AUTHORS_QUERY }]
     }).then(response => allAuthors.value = response.data.deleteAuthor)
   }
 

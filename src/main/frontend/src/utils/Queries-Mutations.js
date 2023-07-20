@@ -50,4 +50,16 @@ export const CREATE_BOOK_MUTATION = gql`
         }
       }
 `
+export const ALL_BOOKS_QUERY = gql`
+      query findAllBooks {
+        findAllBooks {
+          title
+          description
+          authors {
+            name
+            age
+          }
+        }
+      }
+`
 

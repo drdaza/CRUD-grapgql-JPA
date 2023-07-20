@@ -1,7 +1,9 @@
 <script setup>
 import {useAuthorStore} from '../stores/authorStore'
 import {useBookStore} from '../stores/bookStore'
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount } from 'vue'
+
+import BookList from '../components/books/BookList.vue'
 const authorStore = useAuthorStore()
 const bookStore = useBookStore()
 const authorIdToUpdate = ref(0)
@@ -17,9 +19,7 @@ onBeforeMount(() => {
   <ul>
     <li v-for="author of authorStore.allAuthors">{{author.name}} {{ author.age }}</li>
   </ul>
-  <ul>
-    <li v-for="book of bookStore.allBooks">{{book.title}} {{ book.description8 }}</li>
-  </ul>
+  <BookList/>
   <span>uptade</span>
   <input type="number" v-model="authorIdToUpdate">
   <span>delete</span>

@@ -1,0 +1,14 @@
+@use './variables' as *;
+
+*{
+   background-color: map-get($map: $colors, $key: "principal"); 
+   color: map-get($map: $colors, $key: "secondary");
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
+   font-family: sans-serif, 'Courier New', Courier, monospace;
+}
+body{
+    width: 100%;
+    height: auto;
+}

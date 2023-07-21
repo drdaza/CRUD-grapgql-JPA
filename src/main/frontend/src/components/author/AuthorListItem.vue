@@ -1,28 +1,29 @@
 <script setup>
 
 const props = defineProps({
-    book: {
+    author: {
         type:Object,
         required: true,
         default: {}
     }
 })
+
 </script>
 <template>
     <div class="item-wrapper">
         <img src="" alt="">
-        <h2>{{ book.title }}</h2>
-        <p>{{ book.description }}</p>
+        <h2>{{ author.name }}</h2>
+        <p>{{ author.age }}</p>
     </div>
 </template>
 <style lang="scss" scoped>
 @use '../../assets/sass/variables' as *;
 .item-wrapper {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: 30vh;
+    height: 10vh;
 }
 </style>

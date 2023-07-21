@@ -16,6 +16,6 @@ onBeforeMount(() => {
         <BookListItem v-for="book of bookStore.allBooks" :book="book"/>
     </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
     
 </style>

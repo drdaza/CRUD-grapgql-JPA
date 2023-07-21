@@ -16,6 +16,7 @@ onBeforeMount(() => {
 })
 </script>
 <template>
+  <main>
   <ul>
     <li v-for="author of authorStore.allAuthors">{{author.name}} {{ author.age }}</li>
   </ul>
@@ -30,13 +31,15 @@ onBeforeMount(() => {
   <button @click="authorStore.createAuthor({name, age})">create</button>
   <button @click="authorStore.deleteAuthor(authorIdToDelete)">delete</button>
   <button @click="authorStore.updateAuthor({id: authorIdToUpdate , name: 'tulio', age: 28})">update</button>
+  </main>
 </template>
 
-<style>
+<style lang="scss" scoped>
 @media (min-width: 1024px) {
-  .about {
+  main {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
   }
 }

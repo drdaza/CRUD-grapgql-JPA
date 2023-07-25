@@ -41,6 +41,7 @@ export const UPDATE_AUTHOR_MUTATION = gql`
 export const CREATE_BOOK_MUTATION = gql`
       mutation createBook($title: String!, $description: String, $authorId: ID!){
         createBook (title: $title description: $description authorId: $authorId) {
+          id
           title
           description
           authors {
@@ -53,6 +54,7 @@ export const CREATE_BOOK_MUTATION = gql`
 export const ALL_BOOKS_QUERY = gql`
       query findAllBooks {
         findAllBooks {
+          id
           title
           description
           authors {

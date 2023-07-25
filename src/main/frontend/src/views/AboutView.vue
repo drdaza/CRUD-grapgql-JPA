@@ -27,7 +27,7 @@ onBeforeMount(() => {
   <input type="number" v-model="authorIdToDelete">
   <input type="text" v-model="name">
   <input type="number" v-model="age">
-  <button @click="bookStore.createBook({title: 'el titulo', description: 'desc', authorId: 86})">Book</button>
+  <button @click="bookStore.createBook({title: 'el titulo', description: 'desc', authorId: 1})">Book</button>
   <button @click="authorStore.createAuthor({name, age})">create</button>
   <button @click="authorStore.deleteAuthor(authorIdToDelete)">delete</button>
   <button @click="authorStore.updateAuthor({id: authorIdToUpdate , name: 'tulio', age: 28})">update</button>

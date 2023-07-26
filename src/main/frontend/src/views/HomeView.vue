@@ -1,7 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useBookStore } from '../stores/bookStore'
+
 import BookList from '../components/books/BookList.vue'
+import CreateNewItem from '../components/creationComponents/CreateNewItem.vue';
 const bookStore = useBookStore()
 const name = ref('')
 const age = ref(0)
@@ -24,7 +26,7 @@ const bookForEditActions = (event) => {
       <h4 v-if="!existBooks">there is no book in this section yet, do you want to create a new item?</h4>
     </section>
     <section class="book-action-section">
-
+      <CreateNewItem :type-of-element="'Book'"/>
     </section>
   </main>
 </template>

@@ -5,7 +5,7 @@ const props = defineProps({
     value: {
         type: String || Number,
         required: false,
-        default: null
+        default: ''
     },
     type: {
         type: String,
@@ -18,21 +18,47 @@ const valueOfInput = ref(null)
 
 const emits = defineEmits(['emitValueInput'])
 
-const emitValueInput = () => {
+const emitValueInput = (event) => {
     const emitMapOptions = {
-        'text': ()=>{emits('emitValueInput', valueOfInput.value)},
+        'text': ()=>{
+            parseValue(event.target.value)
+            emits('emitValueInput', event.target.value)
+        },
         'number': ()=>{
-            if (Number.isNaN(parseFloat(valueOfInput.value))) {return}
-            emits('emitValueInput', !Number.isNaN(parseFloat(valueOfInput.value)) ? valueOfInput.value : '')
+            if (Number.isNaN(parseFloat(event.data))) {
+                parseValue(event.target.value)
+                return
+            }
+            parseValue(event.target.value)
+            debugger
+            emits('emitValueInput', !Number.isNaN(parseFloat(event.target.value)) ? event.target.value : '')
         }
     }
     emitMapOptions[props.type]()
 }
+
+const parseValue = (value)=>{
+    const parseValueOptions = {
+        'text': ()=>{
+            debugger
+            valueOfInput.value = value
+        },
+        'number': ()=>{
+            console.log(typeof value);
+            if(!Number.isNaN(parseFloat(value))) { value = parseFloat(value)
+            }
+            console.log(typeof value);
+            (typeof value === 'string') ? valueOfInput.value = '' : valueOfInput.value = value
+        }
+    }
+    return parseValueOptions[props.type]() || null
+}
+
 </script>
 <template>
     <div class="generic-input-wrapper">
         <label class="generic-input-label"><b>This is a normal Input</b></label>
-        <input v-model="valueOfInput" type="text" class="generic-input-style" @input="emitValueInput">
+        <input :value="valueOfInput" type="text" class="generic-input-style" @input="emitValueInput">
     </div>
 </template>
 <style lang="scss" scoped>

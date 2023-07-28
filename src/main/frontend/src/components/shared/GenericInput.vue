@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue';
-
+import { ref, reactive, computed } from 'vue';
+// props
 const props = defineProps({
     value: {
-        type: String || Number,
+        type: [String, Number],
         required: false,
         default: ''
     },
@@ -13,53 +13,75 @@ const props = defineProps({
         default: 'text'
     }
 })
-
-const valueOfInput = ref(null)
-
+// emits
 const emits = defineEmits(['emitValueInput'])
 
-const emitValueInput = (event) => {
+// data
+const valueOfInput = ref(null)
+const numberValue = reactive({
+    symbol: '',
+    intValue: '',
+    decimalSymbol: '.',
+    decimalValue: ''
+})
+
+// methods
+const inputHandler = (event) => {
+    const validExpressions = [/^-?\d+$/, /^-?\d+(\.\d+)?(,\d+)?$/]
+    const lastValueInput = event.data
+    let eventHandlerValue = event.target.value
+
     const emitMapOptions = {
         'text': ()=>{
-            parseValue(event.target.value)
-            emits('emitValueInput', event.target.value)
+            valueOfInput.value = parseValue(event.target.value)
         },
         'number': ()=>{
+            console.log(validExpressions.map(exp => exp.test(event.data)));
             if (Number.isNaN(parseFloat(event.data))) {
-                parseValue(event.target.value)
+                event.target.value = valueOfInput.value
                 return
             }
-            parseValue(event.target.value)
-            debugger
-            emits('emitValueInput', !Number.isNaN(parseFloat(event.target.value)) ? event.target.value : '')
+            // parseValue(event.target.value)
+            valueOfInput.value = parseValue(event.target.value)
         }
     }
     emitMapOptions[props.type]()
 }
 
-const parseValue = (value)=>{
+// const parseValue = (value)=>{
+//     const parseValueOptions = {
+//         'text': ()=>{
+//             return value
+//         },
+//         'number': ()=>{
+//             if (Number.isNaN(parseFloat(value))) return ''
+//             return parseFloat(value)
+//         }
+//     }
+//     return parseValueOptions[props.type]() || null
+// }
+
+// computed
+
+const valueConstructor = computed(()=>{
     const parseValueOptions = {
         'text': ()=>{
-            debugger
-            valueOfInput.value = value
+            return valueOfInput
         },
         'number': ()=>{
-            console.log(typeof value);
-            if(!Number.isNaN(parseFloat(value))) { value = parseFloat(value)
-            }
-            console.log(typeof value);
-            (typeof value === 'string') ? valueOfInput.value = '' : valueOfInput.value = value
+            return parseFloat(`${numberValue.symbol}${numberValue.intValue}${numberValue.decimalSymbol}${numberValue.decimalValue}`)
         }
     }
     return parseValueOptions[props.type]() || null
-}
+})
 
 </script>
 <template>
     <div class="generic-input-wrapper">
         <label class="generic-input-label"><b>This is a normal Input</b></label>
-        <input :value="valueOfInput" type="text" class="generic-input-style" @input="emitValueInput">
+        <input :value="valueOfInput" type="text" class="generic-input-style" @input="inputHandler">
     </div>
+    <h1>{{ valueOfInput }}</h1>
 </template>
 <style lang="scss" scoped>
 .generic-input-wrapper {

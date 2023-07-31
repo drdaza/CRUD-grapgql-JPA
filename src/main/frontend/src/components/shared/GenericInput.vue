@@ -42,7 +42,9 @@ const inputHandler = (event) => {
             valueOfInput.value = event.target.value
         },
         'number': ()=>{
-            debugger
+            
+            const inputValueHasMoreThanOneDecimalSymbol = inputValue.split('').filter(symbol =>  symbol === DECIMAL_SYMBOL).length > 1
+
             if (lastValueInput === NEGATIVE_SYMBOL) {
                 numberValue.symbol = NEGATIVE_SYMBOL
             }
@@ -51,13 +53,15 @@ const inputHandler = (event) => {
                 numberValue.symbol = POSITIVE_SYMBOL
             }
 
-            if (lastValueInput === DECIMAL_SYMBOL && (valueOfInput.value === null || valueOfInput.value === NEGATIVE_SYMBOL || valueOfInput.value === EMPTY_SYMBOL) ) {
-                inputValue = numberValue.symbol === NEGATIVE_SYMBOL ? `${numberValue.symbol}0.` : '0.'
-                valueOfInput.value = inputValue
+            if ((lastValueInput === DECIMAL_SYMBOL) && (valueOfInput.value === null || valueOfInput.value === NEGATIVE_SYMBOL || valueOfInput.value === EMPTY_SYMBOL) ) {
+                inputValue = numberValue.symbol === NEGATIVE_SYMBOL ? `${numberValue.symbol}${lastValueInput}` : lastValueInput
+                // valueOfInput.value = inputValue
                 return
+                // inputValue = numberValue.symbol === NEGATIVE_SYMBOL ? `${numberValue.symbol}0.` : '0.'
+                // valueOfInput.value = inputValue
+                // return
             }
 
-            const inputValueHasMoreThanOneDecimalSymbol = inputValue.split('').filter(symbol =>  symbol === DECIMAL_SYMBOL).length > 1
             
             if (inputValueHasMoreThanOneDecimalSymbol && lastValueInput === DECIMAL_SYMBOL) {
                 event.target.value = valueOfInput.value
@@ -85,18 +89,17 @@ const inputHandler = (event) => {
     emitMapOptions[props.type]()
 }
 
-// const parseValue = (value)=>{
-//     const parseValueOptions = {
-//         'text': ()=>{
-//             return value
-//         },
-//         'number': ()=>{
-//             if (Number.isNaN(parseFloat(value))) return ''
-//             return parseFloat(value)
-//         }
-//     }
-//     return parseValueOptions[props.type]() || null
-// }
+const parseValue = (value)=>{
+    const parseValueOptions = {
+        'text': ()=>{
+            return value
+        },
+        'number': ()=>{
+            
+        }
+    }
+    return parseValueOptions[props.type]() || null
+}
 
 // computed
 

@@ -55,11 +55,7 @@ const inputHandler = (event) => {
 
             if ((lastValueInput === DECIMAL_SYMBOL) && (valueOfInput.value === null || valueOfInput.value === NEGATIVE_SYMBOL || valueOfInput.value === EMPTY_SYMBOL) ) {
                 inputValue = numberValue.symbol === NEGATIVE_SYMBOL ? `${numberValue.symbol}${lastValueInput}` : lastValueInput
-                // valueOfInput.value = inputValue
                 return
-                // inputValue = numberValue.symbol === NEGATIVE_SYMBOL ? `${numberValue.symbol}0.` : '0.'
-                // valueOfInput.value = inputValue
-                // return
             }
 
             
@@ -78,24 +74,30 @@ const inputHandler = (event) => {
             }
 
             numberValue.numericValue = inputValue
-            if(numberValue.numericValue === EMPTY_SYMBOL) {
-                valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? numberValue.symbol : EMPTY_SYMBOL
-                return
-            }
+            parseValue(inputValue)
+            // if (numberValue.numericValue === EMPTY_SYMBOL) {
+            //     valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? numberValue.symbol : EMPTY_SYMBOL
+            //     return
+            // }
 
-            valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? parseFloat(`${numberValue.symbol}${numberValue.numericValue}`) : parseFloat(inputValue)
+            // valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? parseFloat(`${numberValue.symbol}${numberValue.numericValue}`) : parseFloat(inputValue)
         }
     }
     emitMapOptions[props.type]()
 }
 
-const parseValue = (value)=>{
+const parseValue = (value = null)=>{
     const parseValueOptions = {
         'text': ()=>{
             return value
         },
         'number': ()=>{
-            
+            if (numberValue.numericValue === EMPTY_SYMBOL){
+                valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? numberValue.symbol : EMPTY_SYMBOL
+                return
+            }
+
+            valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? parseFloat(`${numberValue.symbol}${numberValue.numericValue}`) : parseFloat(value)
         }
     }
     return parseValueOptions[props.type]() || null

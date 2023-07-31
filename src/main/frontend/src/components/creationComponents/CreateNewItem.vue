@@ -21,7 +21,7 @@ console.log(event);
 </script>
 <template> 
     <div class="create-new-item-container">
-        <GenericInput :type="'text'" @emit-value-input="emitHandler"/>
-        <GenericInput :type="'number'" @emit-value-input="emitHandler"/>
+        <GenericInput :type="'text'" :label="'input type text'" @emit-value-input="emitHandler"/>
+        <GenericInput :type="'number'" :label="'input type number'" @emit-value-input="emitHandler"/>
     </div>
 </template>

@@ -11,6 +11,11 @@ const props = defineProps({
         type: String,
         required: true,
         default: 'text'
+    },
+    label: {
+        type: String,
+        required: false,
+        default: 'label'
     }
 })
 // emits
@@ -33,7 +38,7 @@ const DECIMAL_SYMBOL = '.'
 
 // methods
 const inputHandler = (event) => {
-    const validExpressions = [/^[-+]?[0-9]*[,.]?[0-9]?[0-9]+$/, /^[-+]?[0-9]$/, /^[-+]?[0-9]*[,.]$/]
+    const validNumberExpresions = [/^[-+]?[0-9]*[,.]?[0-9]?[0-9]+$/, /^[-+]?[0-9]$/, /^[-+]?[0-9]*[,.]$/]
     const lastValueInput = event.data
     let inputValue = event.target.value
 
@@ -68,7 +73,7 @@ const inputHandler = (event) => {
             inputValue = inputValue.replace(POSITIVE_SYMBOL, EMPTY_SYMBOL) 
             inputValue = inputValue.replace(NEGATIVE_SYMBOL, EMPTY_SYMBOL)
             
-            if (inputValue !== EMPTY_SYMBOL && !validExpressions.find(regex => regex.test(inputValue))) {
+            if (inputValue !== EMPTY_SYMBOL && !validNumberExpresions.find(regex => regex.test(inputValue))) {
                 event.target.value = valueOfInput.value
                 return
             }
@@ -116,7 +121,7 @@ const valueConstructor = computed(()=>{
 </script>
 <template>
     <div class="generic-input-wrapper">
-        <label class="generic-input-label"><b>This is a normal Input</b></label>
+        <label class="generic-input-label"><b>{{ label }}</b></label>
         <input :value="valueOfInput" type="text" class="generic-input-style" @input="inputHandler">
     </div>
     <h1>{{ valueOfInput }}</h1>

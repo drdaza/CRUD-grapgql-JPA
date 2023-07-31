@@ -75,12 +75,6 @@ const inputHandler = (event) => {
 
             numberValue.numericValue = inputValue
             parseValue(inputValue)
-            // if (numberValue.numericValue === EMPTY_SYMBOL) {
-            //     valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? numberValue.symbol : EMPTY_SYMBOL
-            //     return
-            // }
-
-            // valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? parseFloat(`${numberValue.symbol}${numberValue.numericValue}`) : parseFloat(inputValue)
         }
     }
     emitMapOptions[props.type]()
@@ -98,6 +92,8 @@ const parseValue = (value = null)=>{
             }
 
             valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? parseFloat(`${numberValue.symbol}${numberValue.numericValue}`) : parseFloat(value)
+
+            emits('emitValueInput', valueOfInput.value)
         }
     }
     return parseValueOptions[props.type]() || null

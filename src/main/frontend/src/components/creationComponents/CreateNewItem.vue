@@ -5,23 +5,47 @@ const props = defineProps({
         type: String,
         required: true,
         default: null
+    },
+    titleSection: {
+        type: String,
+        required: false,
+        default: 'Section'
     }
 })
 const creationOptions = {
-    'author': ()=>{console.log('try create a new author')},
-    'book': ()=>{console.log('tye create a new book');}
+    'author': () => { console.log('try create a new author') },
+    'book': () => { console.log('tye create a new book'); }
 }
 
 const emitHandler = (event) => {
-console.log(event);
+
 }
 // incluir la posibilidad de que si no se escoge un author cuando creemos un libro se cree con un author de nombre desconocido
-// esta idea evolucionó a ser mi pequeña libreta para anotar libros pendientes que me vayan interesando a y poder anotarlos/organizarlos/eliminarlos
-// para poder practicar, cambiarlos de estado a leidos o cosas asi
 </script>
-<template> 
-    <div class="create-new-item-container">
-        <GenericInput :type="'text'" :label="'input type text'" @emit-value-input="emitHandler"/>
-        <GenericInput :type="'number'" :label="'input type number'" @emit-value-input="emitHandler"/>
+<template>
+    <div class="create-new-item-wrapper">
+        <div class="title-zone">
+            <h2>{{ titleSection }}</h2>
+        </div>
+        <div class="create-new-item-container" v-show="typeOfElement === 'Author'">
+            <GenericInput :type="'text'" :label="'Author name:'" @emit-value-input="emitHandler" />
+            <GenericInput :type="'number'" :label="'Author age:'" @emit-value-input="emitHandler" />
+        </div>
+        <div class="create-new-item-container" v-show="typeOfElement === 'Book'">
+            <GenericInput :type="'text'" :label="'Book title:'" @emit-value-input="emitHandler" />
+            <GenericInput :type="'text'" :label="'Book description:'" @emit-value-input="emitHandler" />
+            <GenericInput :type="'number'" :label="'Author id:'" @emit-value-input="emitHandler" />
+        </div>
     </div>
 </template>
+<style lang="scss" scoped>
+@use '../../assets/sass/mixins' as *;
+.create-new-item-wrapper {
+    @include flexDisplay(column, center, normal, 100%);
+    gap: 2vh;
+    .create-new-item-container {
+        @include flexDisplay(column, center, normal, 80%);
+        gap: 0.5vh;
+    }
+}
+</style>

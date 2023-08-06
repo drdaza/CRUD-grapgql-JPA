@@ -26,9 +26,11 @@ const creationOptions = {
 }
 
 const emitHandler = (event) => {
-
     creationOptions[props.typeOfElement](event)
-    console.log(newItemCreate)
+}
+
+const emitItemCreate = () => {
+    emits('newItemCreate', newItemCreate)
 }
 // incluir la posibilidad de que si no se escoge un author cuando creemos un libro se cree con un author de nombre desconocido
 </script>
@@ -47,7 +49,7 @@ const emitHandler = (event) => {
             <GenericInput :input-identifier="'bookAuthorId'" :type="'number'" :label="'Author id:'" @emit-value-input="emitHandler" />
         </div>
         <div class="create-new-item-container">
-            <button>Create new {{ typeOfElement }}</button>
+            <button @click="emitItemCreate">Create new {{ typeOfElement }}</button>
         </div>
     </div>
 </template>

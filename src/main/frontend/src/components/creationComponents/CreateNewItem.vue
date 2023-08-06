@@ -1,4 +1,5 @@
 <script setup>
+import { reactive } from 'vue';
 import GenericInput from '../shared/GenericInput.vue'
 const props = defineProps({
     typeOfElement: {
@@ -12,13 +13,22 @@ const props = defineProps({
         default: 'Section'
     }
 })
+
+const newItemCreate = reactive({})
+const emits = defineEmits(['newItemCreate'])
 const creationOptions = {
-    'author': () => { console.log('try create a new author') },
-    'book': () => { console.log('tye create a new book'); }
+    'Author': (event) => {
+        newItemCreate[event.identifier] = event.value
+     },
+    'Book': (event) => { 
+        newItemCreate[event.identifier] = event.value
+     }
 }
 
 const emitHandler = (event) => {
 
+    creationOptions[props.typeOfElement](event)
+    console.log(newItemCreate)
 }
 // incluir la posibilidad de que si no se escoge un author cuando creemos un libro se cree con un author de nombre desconocido
 </script>
@@ -28,13 +38,16 @@ const emitHandler = (event) => {
             <h2>{{ titleSection }}</h2>
         </div>
         <div class="create-new-item-container" v-show="typeOfElement === 'Author'">
-            <GenericInput :type="'text'" :label="'Author name:'" @emit-value-input="emitHandler" />
-            <GenericInput :type="'number'" :label="'Author age:'" @emit-value-input="emitHandler" />
+            <GenericInput :input-identifier="'authorName'" :type="'text'" :label="'Author name:'" @emit-value-input="emitHandler" />
+            <GenericInput :input-identifier="'authorAge'" :type="'number'" :label="'Author age:'" @emit-value-input="emitHandler" />
         </div>
         <div class="create-new-item-container" v-show="typeOfElement === 'Book'">
-            <GenericInput :type="'text'" :label="'Book title:'" @emit-value-input="emitHandler" />
-            <GenericInput :type="'text'" :label="'Book description:'" @emit-value-input="emitHandler" />
-            <GenericInput :type="'number'" :label="'Author id:'" @emit-value-input="emitHandler" />
+            <GenericInput :input-identifier="'bookTitle'" :type="'text'" :label="'Book title:'" @emit-value-input="emitHandler" />
+            <GenericInput :input-identifier="'bookDescription'" :type="'text'" :label="'Book description:'" @emit-value-input="emitHandler" />
+            <GenericInput :input-identifier="'bookAuthorId'" :type="'number'" :label="'Author id:'" @emit-value-input="emitHandler" />
+        </div>
+        <div class="create-new-item-container">
+            <button>Create new {{ typeOfElement }}</button>
         </div>
     </div>
 </template>

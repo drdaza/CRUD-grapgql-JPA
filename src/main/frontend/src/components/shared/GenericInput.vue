@@ -16,6 +16,11 @@ const props = defineProps({
         type: String,
         required: false,
         default: 'label'
+    },
+    inputIdentifier: {
+        type: String,
+        required: true,
+        default: null
     }
 })
 // emits
@@ -44,7 +49,8 @@ const inputHandler = (event) => {
 
     const emitMapOptions = {
         'text': ()=>{
-            valueOfInput.value = event.target.value
+            valueOfInput.value = inputValue
+            parseValue(inputValue)
         },
         'number': ()=>{
             
@@ -88,7 +94,8 @@ const inputHandler = (event) => {
 const parseValue = (value = null)=>{
     const parseValueOptions = {
         'text': ()=>{
-            return value
+            
+            emits('emitValueInput', {identifier: props.inputIdentifier , value: valueOfInput.value})
         },
         'number': ()=>{
             if (numberValue.numericValue === EMPTY_SYMBOL){
@@ -98,7 +105,7 @@ const parseValue = (value = null)=>{
 
             valueOfInput.value = numberValue.symbol === NEGATIVE_SYMBOL ? parseFloat(`${numberValue.symbol}${numberValue.numericValue}`) : parseFloat(value)
 
-            emits('emitValueInput', valueOfInput.value)
+            emits('emitValueInput', {identifier: props.inputIdentifier ,value: valueOfInput.value})
         }
     }
     return parseValueOptions[props.type]() || null
@@ -124,7 +131,6 @@ const valueConstructor = computed(()=>{
         <label class="generic-input-label"><b>{{ label }}</b></label>
         <input :value="valueOfInput" type="text" class="generic-input-style" @input="inputHandler">
     </div>
-    <h1>{{ valueOfInput }}</h1>
 </template>
 <style lang="scss" scoped>
 .generic-input-wrapper {

@@ -1,12 +1,18 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onBeforeMount } from 'vue';
 import { useBookStore } from '../stores/bookStore'
-
+import { useAuthorStore } from '../stores/authorStore'
 import BookList from '../components/books/BookList.vue'
 import CreateNewItem from '../components/creationComponents/CreateNewItem.vue';
+const authorStore = useAuthorStore()
 const bookStore = useBookStore()
 const name = ref('')
 const age = ref(0)
+
+onBeforeMount(() => {
+  bookStore.findAllBooks()
+  authorStore.findAllAuthors()
+})
 
 const existBooks = computed(() => {
   return bookStore.allBooks.length > 0
@@ -16,6 +22,29 @@ const bookForEditActions = (event) => {
   console.log(event);
 }
 
+const createNewBookEmitHandler = (event) => {
+  const newBookForCreate = parseValueForCreateNewBook(event)
+  if (authorExist(event.bookAuthorId)) {
+    bookStore.createBook(newBookForCreate)
+    return
+  }
+  
+  console.log('author does not exist');
+}
+
+const parseValueForCreateNewBook = (event) => {
+  return {
+    title: event.bookTitle,
+    description: event.bookDescription ? event.bookDescription : '',
+    authorId: event.bookAuthorId
+  }
+}
+
+const authorExist = (authorId) => {
+  
+  console.log(authorStore.allAuthors)
+  return authorStore.allAuthors.find(author => parseInt(author.id) === authorId) || null
+}
 </script>
 
 <template>
@@ -29,7 +58,7 @@ const bookForEditActions = (event) => {
         <h4 v-if="!existBooks">there is no book in this section yet, do you want to create a new item?</h4>
       </section>
       <section class="book-action-section">
-        <CreateNewItem :type-of-element="'Book'" :title-section="'Create a new Book'" />
+        <CreateNewItem @new-item-create="createNewBookEmitHandler" :type-of-element="'Book'" :title-section="'Create a new Book'" />
       </section>
     </div>
   </main>

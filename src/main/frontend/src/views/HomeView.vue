@@ -4,10 +4,12 @@ import { useBookStore } from '../stores/bookStore'
 import { useAuthorStore } from '../stores/authorStore'
 import BookList from '../components/books/BookList.vue'
 import CreateNewItem from '../components/creationComponents/CreateNewItem.vue';
+import PopupNotification from '../components/shared/PopupNotification.vue';
 const authorStore = useAuthorStore()
 const bookStore = useBookStore()
 const name = ref('')
 const age = ref(0)
+const showPopUp = ref(false)
 
 onBeforeMount(() => {
   bookStore.findAllBooks()
@@ -28,8 +30,13 @@ const createNewBookEmitHandler = (event) => {
     bookStore.createBook(newBookForCreate)
     return
   }
-  
-  console.log('author does not exist');
+
+  showPopUp.value = true
+
+
+  setTimeout(() => {
+    showPopUp.value = false
+  }, 3000)
 }
 
 const parseValueForCreateNewBook = (event) => {
@@ -41,14 +48,14 @@ const parseValueForCreateNewBook = (event) => {
 }
 
 const authorExist = (authorId) => {
-  
-  console.log(authorStore.allAuthors)
   return authorStore.allAuthors.find(author => parseInt(author.id) === authorId) || null
 }
 </script>
-
 <template>
   <main>
+    <transition>
+      <PopupNotification v-show="showPopUp" :message="'author does not exist'" :notification-type="'warning'" />
+    </transition>
     <div class="title-zone">
       <h1>Books</h1>
     </div>
@@ -58,7 +65,8 @@ const authorExist = (authorId) => {
         <h4 v-if="!existBooks">there is no book in this section yet, do you want to create a new item?</h4>
       </section>
       <section class="book-action-section">
-        <CreateNewItem @new-item-create="createNewBookEmitHandler" :type-of-element="'Book'" :title-section="'Create a new Book'" />
+        <CreateNewItem @new-item-create="createNewBookEmitHandler" :type-of-element="'Book'"
+          :title-section="'Create a new Book'" />
       </section>
     </div>
   </main>
@@ -90,5 +98,15 @@ main {
       align-items: center;
     }
   }
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

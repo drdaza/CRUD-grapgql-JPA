@@ -31,6 +31,8 @@ const emitBookInfo = (event) => {
 .list-wrapper {
   @include flexDisplay(row, center, space-evenly, 100%);
   flex-wrap: wrap;
+  gap: 2vh;
+  transition: 0.5s;
   .list-item-wrapper {
     width: 30%;
   }
